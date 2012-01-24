@@ -75,10 +75,14 @@ android_clojuredocs.after_search = function(results) {
 };
 
 android_clojuredocs.start_loading = function() {
-  $(document.body).grab(new Element("div", {"id":"loading", "text":"Loading..."}));
+  //navigator.notification.progressStart("Waiting...", "Loading content...");
+  //navigator.notification.activityStart();
+  PhoneGap.exec(null, null, "Notification", "activityStart", ["Please wait...","Loading..."]);
 }
 android_clojuredocs.end_loading = function() {
-  $('loading').destroy();
+  //navigator.notification.progressStop();
+  //navigator.notification.activityStop();
+  PhoneGap.exec(null, null, "Notification", "activityStop", []);
 }
 
 android_clojuredocs.open_function = function(url) {
@@ -162,9 +166,7 @@ android_clojuredocs.after_page_loaded = function(result){
 };
 
 android_clojuredocs.showtip=function(msg){
-  var tip = new Element("div", {id:"tip", html:msg});
-  $(document.body).grab(tip);
-  (function(){tip.destroy();}).delay(3000);
+  navigator.notification.alert(msg);
 }
 
 android_clojuredocs.onback=function() {
