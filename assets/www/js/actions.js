@@ -38,7 +38,11 @@ android_clojuredocs.after_search = function(results) {
   android_clojuredocs.end_loading();
   console.log(results.length);
   if (results.length > 0) {
+
+    // remove existed search results and function view
     if($("search_result_container")){$("search_result_container").destroy()}
+    if($("fcontainer")){$("fcontainer").destroy()}
+
     var parentList = new Element("ul", {"id": "search_result_container"});
     for (var i=0; i<results.length; i++) {
       var ele = results[i];
@@ -61,6 +65,7 @@ android_clojuredocs.after_search = function(results) {
 
       newEle.inject(parentList, "bottom");
     }
+    // hide home view
     $("home").setStyle("display", "none");
     parentList.inject($("content"));
     android_clojuredocs.current_view = "SEARCH";
