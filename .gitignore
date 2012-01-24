@@ -1,0 +1,7 @@
+*.apk
+*.iml
+.idea/
+out
+libs/*
+gen/
+

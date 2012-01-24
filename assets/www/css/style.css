@@ -1,0 +1,110 @@
+body {
+   font-size:1em;
+   background-color:#F8F8F8;
+   margin:0;
+}
+#search {
+   padding:4px;
+   border-bottom:1px #CCC solid;
+   background-color:#ccc;
+   background-image:-webkit-gradient(linear, left top, left bottom, from(#eee), to(#ccc));
+}
+#searchbox {
+   padding:5px;
+   width:89%;
+   border:1px #CCC solid;
+   border-right:0;
+   border-radius:5px 0 0 5px;
+   outline:0;
+   font-size:1em;
+}
+#searchbtn {
+    outline:0;
+    border-radius:0 5px 5px 0;
+    margin:0;
+    padding:5px;
+    border:1px #CCC solid;
+    border-left:0;
+    width:10%;
+    font-size:1em;
+    background:#AAA url('../img/search.png') center center no-repeat;
+}
+#searchbtn:hover {
+    background:#999 url('../img/search.png') center center no-repeat;
+}
+#content {
+}
+#home {
+    padding:10px;
+}
+#home p {line-height:150%;}
+
+ul {
+    margin:0;
+    padding:0;
+}
+li.search_result_item {
+    list-style:none;
+    padding:12px 4px 12px 4px;
+    border-bottom:1px #CCC solid;
+    overflow:hidden;
+}
+li.search_result_item:active {
+    background-color:#EEE;
+    border:1px #86D69C solid;
+}
+span.search_result_item_ns {
+    font-size:0.8em;
+    color:#666;
+}
+span.search_result_item_fname{
+    font-size:1.2em;
+    font-weight:bold;
+    color:#000;
+}
+
+#footer {
+    bottom:0;
+    background-color:#EEE;
+    color:#999;
+    font-size:0.8em;
+    padding:2px;
+    margin-bottom:0;
+}
+
+#loading {
+    margin:auto;
+    top:100px;
+    left:100px;
+    position:absolute;
+    border-radius:5px;
+    background-color:rgba(0, 0, 0, 0.7);
+    color:white;
+    padding:1.4em;
+    text-align:center;
+    font-weight:bold;
+    box-shadow:0 0 20px #86D69C;
+}
+#tip {
+    margin:auto;
+    top:100px;
+    left:100px;
+    position:absolute;
+    border-radius:5px;
+    background-color:rgba(0, 0, 0, 0.7);
+    color:white;
+    padding:1.4em;
+    text-align:center;
+    font-weight:bold;
+    box-shadow:0 0 20px #86D69C;
+}
+
+#fcontainer{
+   padding:10px;
+}
+h2 {margin:5px 0 5px 0;}
+p.fns {color:#666; margin:0;margin-top:2px; font-size:0.8em;}
+#usages {margin-top:5px; font-size:1em; font-family:monospace; list-style:none;}
+
+h3 {border-top:1px #CCC solid; margin-top:10px; padding-top:5px; color:#363636;}
+div.syntaxhighlighter {font-size:0.8em !important; }
