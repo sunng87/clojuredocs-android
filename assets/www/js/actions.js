@@ -16,6 +16,7 @@ android_clojuredocs.init = function() {
       android_clojuredocs.dosearch(token);
     }
   });
+  $('allBtn').addEvent('click', android_clojuredocs.browseAll);
 
   android_clojuredocs.current_view = "HOME";
   console.log("Initialized.")
@@ -103,14 +104,13 @@ android_clojuredocs.after_page_loaded = function(result){
   var fname = nameele.getElement("h1").get("text").trim();
   var fns = nameele.getElement("h2>span.ns>a").get("text").trim();
 
-  var usageele = result.filter("div.usage")[0];
-  var fusages = usageele.getElements("li").map(function(e){return e.get("text")});
+  var fusages = result.filter("div.usage li").map(function(e){return e.get("text")});
 
   var docele = result.filter("div.doc")[0];
-  var fdocs = docele.getElement("div.content").get("text");
+  var fdocs = docele? docele.getElement("div.content").get("text"): "Not Available";
 
   var sourceele = result.filter("div.source_content")[0];
-  var fsource = sourceele.getElement("pre").get("text");
+  var fsource = sourceele?sourceele.getElement("pre").get("text"):null;
 
   var exampleele = result.filter("div.examples")[0];
   var fexamples = exampleele.getElements("pre").map(
@@ -141,26 +141,36 @@ android_clojuredocs.after_page_loaded = function(result){
   var srctitle = new Element("h3", {"text": "Sources"});
   srctitle.inject( container);
   var src = new Element("div", {"class": "source"});
-  var srchightlight = new Element("pre", {"class": "brush:clojure", 
-                                          "text": fsource});
+  var srchightlight;
+  if (fsource!=null){
+    srchightlight = new Element("pre", {"class": "brush:clojure","text": fsource});
+  } else {
+    srchightlight = new Element("p", {"text": "Not Available"});
+  }
+
   srchightlight.inject( src);
   src.inject( container);
 
   var exampletitle = new Element("h3", {"text": "Examples"});
   exampletitle.inject( container);
-  fexamples.each(function(e){
-    var exm = new Element("div", {"class": "source"});
-    var exmhighlight = new Element("pre", {"class": "brush:clojure",
+  if(fexamples.length > 0){
+    fexamples.each(function(e){
+      var exm = new Element("div", {"class": "source"});
+      var exmhighlight = new Element("pre", {"class": "brush:clojure",
                                            "text": e});
-    exmhighlight.inject(exm);
-    exm.inject( container);
-  });
+      exmhighlight.inject(exm);
+      exm.inject( container);
+    });
+  } else {
+    new Element("div", {"text": "Not Available"}).inject(container);
+  }
 
   $('search_result_container').setStyle("display", "none");
   $('content').grab(container);
 
   android_clojuredocs.current_view = "FUNCTION";
 
+  scrollTo(0,1);
   android_clojuredocs.end_loading();
   SyntaxHighlighter.highlight({gutter: false, toolbar: false});
 };
@@ -181,6 +191,52 @@ android_clojuredocs.onback=function() {
   } else {
     device.exitApp();
   }
+}
+
+android_clojuredocs.browseAll=function() {
+  var url = android_clojuredocs.server + "/clojure_core";
+  var r = new Request.HTML({
+    "url":url,
+    "evalScripts": false,
+    "filter": "span.function",
+    "onSuccess": function(_, resultDom, _, _) {
+      android_clojuredocs.after_list(resultDom);
+    }});
+  r.get();
+  android_clojuredocs.start_loading();
+}
+android_clojuredocs.after_list=function(results){
+  // remove existed search results and function view
+  if($("search_result_container")){$("search_result_container").destroy()}
+  if($("fcontainer")){$("fcontainer").destroy()}
+
+  var parentList = new Element("ul", {"id": "search_result_container"});
+  results.each(function(e){
+    var linkEle = e.getElement("a");
+    var link = linkEle.get("href");
+    var fname = linkEle.get("text");
+    var ns = link.match(/\/clojure_core\/(.+?)\//i)[1];
+
+    var new_name = '<span class="search_result_item_fname">'
+        + fname + "</span>"
+        + '<br/><span class="search_result_item_ns">(' +ns + ')</span>';
+
+    var newEle = new Element("li");
+
+    newEle.set("html", new_name).addClass('search_result_item');
+    newEle.addEvent("click", function(target) {
+      return function(){
+        android_clojuredocs.open_function(target)
+      };
+    }(link));
+
+    newEle.inject(parentList, "bottom");
+  });
+  // hide home view
+  $("home").setStyle("display", "none");
+  parentList.inject($("content"));
+  android_clojuredocs.current_view = "SEARCH";
+  android_clojuredocs.end_loading();
 }
 
 window.addEvent("domready", android_clojuredocs.init);
