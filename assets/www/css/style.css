@@ -53,6 +53,7 @@ li.search_result_item a{
    text-decoration:none;
    display:block;
    padding:12px 4px 12px 4px;
+   -webkit-tap-highlight-color:rgba(128,128,128,1);
 }
 li.search_result_item a:hover{
    background-color:#EEE;
