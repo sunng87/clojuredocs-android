@@ -52,17 +52,18 @@ android_clojuredocs.after_search = function(results) {
 
       var new_name = '<span class="search_result_item_fname">'
         + fname.get("text") + "</span>"
-        + '<br/><span class="search_result_item_ns">(' +ns.get("text") + ')</span>';
+        + '<br/><span class="search_result_item_ns">(' 
+        + ns.get("text") + ')</span>';
       var link = fname.get("href");
 
-      var newEle = new Element("li");
-
-      newEle.set("html", new_name).addClass('search_result_item');
-      newEle.addEvent("click", function(target) {
+      var newEle = new Element("li", {"class": "search_result_item"});
+      var clickable = new Element("a", {html:new_name, href:"javascript:;"});
+      clickable.addEvent("click", function(target) {
         return function(){
           android_clojuredocs.open_function(target)
         };
       }(link));
+      newEle.grab(clickable);
 
       newEle.inject(parentList, "bottom");
     }
@@ -218,17 +219,18 @@ android_clojuredocs.after_list=function(results){
     var ns = link.match(/\/clojure_core\/(.+?)\//i)[1];
 
     var new_name = '<span class="search_result_item_fname">'
-        + fname + "</span>"
-        + '<br/><span class="search_result_item_ns">(' +ns + ')</span>';
+      + fname + "</span>"
+      + '<br/><span class="search_result_item_ns">(' 
+      + ns + ')</span>';
 
-    var newEle = new Element("li");
-
-    newEle.set("html", new_name).addClass('search_result_item');
-    newEle.addEvent("click", function(target) {
-      return function(){
-        android_clojuredocs.open_function(target)
-      };
-    }(link));
+    var newEle = new Element("li", {"class": "search_result_item"});
+    var clickable = new Element("a", {html: new_name, href:"javascript:;"});
+      clickable.addEvent("click", function(target) {
+        return function(){
+          android_clojuredocs.open_function(target)
+        };
+      }(link));
+    newEle.grab(clickable);
 
     newEle.inject(parentList, "bottom");
   });
